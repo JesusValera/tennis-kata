@@ -6,33 +6,34 @@ namespace TennisGame;
 
 class TennisGame3 implements TennisGame
 {
-    private int $p2 = 0;
-    private int $p1 = 0;
-    private string $p1N = '';
-    private string $p2N = '';
+    private string $playerName1;
+    private string $playerName2;
 
-    public function __construct(string $p1N, string $p2N)
+    private int $playerPoints1 = 0;
+    private int $playerPoints2 = 0;
+
+    public function __construct(string $playerName1, string $playerName2)
     {
-        $this->p1N = $p1N;
-        $this->p2N = $p2N;
+        $this->playerName1 = $playerName1;
+        $this->playerName2 = $playerName2;
     }
 
     public function getScore(): string
     {
         if ($this->isNormalGame()) {
             $p = ["Love", "Fifteen", "Thirty", "Forty"];
-            $s = $p[$this->p1];
+            $s = $p[$this->playerPoints1];
 
             return ($this->isDeuce())
                 ? "{$s}-All"
-                : "{$s}-{$p[$this->p2]}";
+                : "{$s}-{$p[$this->playerPoints2]}";
         }
 
         if ($this->isDeuce()) {
             return "Deuce";
         }
 
-        $s = $this->p1 > $this->p2 ? $this->p1N : $this->p2N;
+        $s = $this->playerPoints1 > $this->playerPoints2 ? $this->playerName1 : $this->playerName2;
 
         if ($this->isAdvantage()) {
             return "Advantage {$s}";
@@ -44,24 +45,24 @@ class TennisGame3 implements TennisGame
     public function wonPoint(string $playerName): void
     {
         if ($playerName === "player1") {
-            $this->p1++;
+            $this->playerPoints1++;
         } else {
-            $this->p2++;
+            $this->playerPoints2++;
         }
     }
 
     private function isNormalGame(): bool
     {
-        return $this->p1 < 4 && $this->p2 < 4 && !($this->p1 + $this->p2 === 6);
+        return $this->playerPoints1 < 4 && $this->playerPoints2 < 4 && !($this->playerPoints1 + $this->playerPoints2 === 6);
     }
 
     private function isDeuce(): bool
     {
-        return $this->p1 == $this->p2;
+        return $this->playerPoints1 == $this->playerPoints2;
     }
 
     private function isAdvantage(): bool
     {
-        return ($this->p1 - $this->p2) * ($this->p1 - $this->p2) == 1;
+        return ($this->playerPoints1 - $this->playerPoints2) * ($this->playerPoints1 - $this->playerPoints2) == 1;
     }
 }
