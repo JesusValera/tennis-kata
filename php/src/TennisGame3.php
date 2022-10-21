@@ -6,8 +6,9 @@ namespace TennisGame;
 
 class TennisGame3 implements TennisGame
 {
-    private const POINTS = ["Love", "Fifteen", "Thirty", "Forty"];
-
+    private const POINTS             = ["Love", "Fifteen", "Thirty", "Forty"];
+    private const THRESHOLD_TO_WIN   = 4;
+    const         MIN_WINNING_POINTS = 6;
     private string $playerName1;
     private string $playerName2;
 
@@ -47,7 +48,7 @@ class TennisGame3 implements TennisGame
 
     public function wonPoint(string $playerName): void
     {
-        if ($playerName === "player1") {
+        if ($playerName === $this->playerName1) {
             $this->playerPoints1++;
         } else {
             $this->playerPoints2++;
@@ -56,7 +57,8 @@ class TennisGame3 implements TennisGame
 
     private function isNormalGame(): bool
     {
-        return $this->playerPoints1 < 4 && $this->playerPoints2 < 4 && !($this->playerPoints1 + $this->playerPoints2 === 6);
+        return $this->playerPoints1 < self::THRESHOLD_TO_WIN && $this->playerPoints2 < self::THRESHOLD_TO_WIN
+               && !($this->playerPoints1 + $this->playerPoints2 === self::MIN_WINNING_POINTS);
     }
 
     private function isDeuce(): bool
