@@ -29,26 +29,23 @@ class TennisGame3 implements TennisGame
     public function getScore(): string
     {
         if ($this->isNormalGame()) {
-            $s = self::POINTS[$this->playerPoints1];
 
-            return $this->isDeuce()
-                ? sprintf('%s-%s', $s, self::ALL)
-                : sprintf("%s-%s", $s, self::POINTS[$this->playerPoints2]);
+            if ($this->isDeuce()) {
+                return sprintf('%s-%s', self::POINTS[$this->playerPoints1], self::ALL);
+            }
+
+            return sprintf("%s-%s", self::POINTS[$this->playerPoints1], self::POINTS[$this->playerPoints2]);
         }
 
         if ($this->isDeuce()) {
             return self::DEUCE;
         }
 
-        $s = $this->playerPoints1 > $this->playerPoints2
-            ? $this->playerName1
-            : $this->playerName2;
-
         if ($this->isAdvantage()) {
-            return sprintf('%s %s', self::ADVANTAGE, $s);
+            return sprintf('%s %s', self::ADVANTAGE, $this->currentWinningPlayer());
         }
 
-        return sprintf('%s for %s', self::WIN, $s);
+        return sprintf('%s for %s', self::WIN, $this->currentWinningPlayer());
     }
 
     public function wonPoint(string $playerName): void
@@ -75,5 +72,12 @@ class TennisGame3 implements TennisGame
     private function isAdvantage(): bool
     {
         return abs($this->playerPoints1 - $this->playerPoints2) === self::MIN_DIFFERENCE_OF_POINTS;
+    }
+
+    private function currentWinningPlayer(): string
+    {
+        return $this->playerPoints1 > $this->playerPoints2
+            ? $this->playerName1
+            : $this->playerName2;
     }
 }
