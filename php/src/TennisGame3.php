@@ -39,7 +39,7 @@ class TennisGame3 implements TennisGame
         return "Win for {$s}";
     }
 
-    public function wonPoint($playerName): void
+    public function wonPoint(string $playerName): void
     {
         if ($playerName === "player1") {
             $this->p1++;
