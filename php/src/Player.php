@@ -22,7 +22,8 @@ final class Player
         return $this->points;
     }
 
-    public function score() {
+    public function score(): string
+    {
         return self::POINTS[$this->points];
     }
 

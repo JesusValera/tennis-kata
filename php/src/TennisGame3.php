@@ -32,7 +32,7 @@ class TennisGame3 implements TennisGame
     {
         if ($this->isNormalGame()) {
             if ($this->isDeuce()) {
-                return sprintf(self::FORMAT_DISPLAY_POINTS, self::POINTS[$this->player1->points()], self::ALL);
+                return sprintf(self::FORMAT_DISPLAY_POINTS, $this->player1->score(), self::ALL);
             }
 
             return sprintf(self::FORMAT_DISPLAY_POINTS, $this->player1->score(), $this->player2->score());
