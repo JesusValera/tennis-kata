@@ -19,26 +19,23 @@ class TennisGame3 implements TennisGame
 
     private const FORMAT_DISPLAY_POINTS = '%s-%s';
 
-    private string $playerName1;
-    private string $playerName2;
+    private Player $player1;
+    private Player $player2;
 
-    private int $playerPoints1 = 0;
-    private int $playerPoints2 = 0;
-
-    public function __construct(string $playerName1, string $playerName2)
+    public function __construct(string $player1Name, string $player2Name)
     {
-        $this->playerName1 = $playerName1;
-        $this->playerName2 = $playerName2;
+        $this->player1 = new Player($player1Name);
+        $this->player2 = new Player($player2Name);
     }
 
     public function getScore(): string
     {
         if ($this->isNormalGame()) {
             if ($this->isDeuce()) {
-                return sprintf(self::FORMAT_DISPLAY_POINTS, self::POINTS[$this->playerPoints1], self::ALL);
+                return sprintf(self::FORMAT_DISPLAY_POINTS, self::POINTS[$this->player1->points()], self::ALL);
             }
 
-            return sprintf(self::FORMAT_DISPLAY_POINTS, self::POINTS[$this->playerPoints1], self::POINTS[$this->playerPoints2]);
+            return sprintf(self::FORMAT_DISPLAY_POINTS, self::POINTS[$this->player1->points()], self::POINTS[$this->player2->points()]);
         }
 
         if ($this->isDeuce()) {
@@ -54,34 +51,34 @@ class TennisGame3 implements TennisGame
 
     public function wonPoint(string $playerName): void
     {
-        if ($playerName === $this->playerName1) {
-            $this->playerPoints1++;
+        if ($playerName === $this->player1->name()) {
+            $this->player1->incrementPoint();
             return;
         }
 
-        $this->playerPoints2++;
+        $this->player2->incrementPoint();
     }
 
     private function isNormalGame(): bool
     {
-        return $this->playerPoints1 < self::THRESHOLD_TO_WIN && $this->playerPoints2 < self::THRESHOLD_TO_WIN
-            && !($this->playerPoints1 + $this->playerPoints2 === self::MIN_WINNING_POINTS);
+        return $this->player1->points() < self::THRESHOLD_TO_WIN && $this->player2->points() < self::THRESHOLD_TO_WIN
+            && !($this->player1->points() + $this->player2->points() === self::MIN_WINNING_POINTS);
     }
 
     private function isDeuce(): bool
     {
-        return $this->playerPoints1 === $this->playerPoints2;
+        return $this->player1->points() === $this->player2->points();
     }
 
     private function isAdvantage(): bool
     {
-        return abs($this->playerPoints1 - $this->playerPoints2) === self::MIN_DIFFERENCE_OF_POINTS;
+        return abs($this->player1->points() - $this->player2->points()) === self::MIN_DIFFERENCE_OF_POINTS;
     }
 
     private function currentWinningPlayer(): string
     {
-        return $this->playerPoints1 > $this->playerPoints2
-            ? $this->playerName1
-            : $this->playerName2;
+        return $this->player1->points() > $this->player2->points()
+            ? $this->player1->name()
+            : $this->player2->name();
     }
 }
