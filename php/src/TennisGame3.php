@@ -6,8 +6,6 @@ namespace TennisGame;
 
 class TennisGame3 implements TennisGame
 {
-    private const POINTS = ["Love", "Fifteen", "Thirty", "Forty"];
-
     private const THRESHOLD_TO_WIN = 4;
     private const MIN_WINNING_POINTS = 6;
     private const MIN_DIFFERENCE_OF_POINTS = 1;
