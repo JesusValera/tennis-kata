@@ -6,16 +6,14 @@ namespace TennisGame;
 
 class TennisGame3 implements TennisGame
 {
-    private const THRESHOLD_TO_WIN = 4;
-    private const MIN_WINNING_POINTS = 6;
-    private const MIN_DIFFERENCE_OF_POINTS = 1;
-
     private const ALL = "All";
     private const DEUCE = "Deuce";
     private const ADVANTAGE = "Advantage";
     private const WIN = 'Win';
 
-    private const FORMAT_DISPLAY_POINTS = '%s-%s';
+    private const FORMAT_POINTS = '%s-%s';
+    private const FORMAT_ADVANTAGE = '%s %s';
+    private const FORMAT_WON = '%s for %s';
 
     private Player $player1;
     private Player $player2;
@@ -30,10 +28,9 @@ class TennisGame3 implements TennisGame
     {
         if ($this->isNormalGame()) {
             if ($this->isDeuce()) {
-                return sprintf(self::FORMAT_DISPLAY_POINTS, $this->player1->score(), self::ALL);
+                return $this->printScore(self::FORMAT_POINTS, $this->player1->score(), self::ALL);
             }
-
-            return sprintf(self::FORMAT_DISPLAY_POINTS, $this->player1->score(), $this->player2->score());
+            return $this->printScore(self::FORMAT_POINTS, $this->player1->score(), $this->player2->score());
         }
 
         if ($this->isDeuce()) {
@@ -41,42 +38,44 @@ class TennisGame3 implements TennisGame
         }
 
         if ($this->isAdvantage()) {
-            return sprintf('%s %s', self::ADVANTAGE, $this->currentWinningPlayer());
+            return $this->printScore(self::FORMAT_ADVANTAGE, self::ADVANTAGE, $this->currentWinningPlayer());
         }
 
-        return sprintf('%s for %s', self::WIN, $this->currentWinningPlayer());
+        return $this->printScore(self::FORMAT_WON, self::WIN, $this->currentWinningPlayer());
     }
 
     public function wonPoint(string $playerName): void
     {
         if ($playerName === $this->player1->name()) {
-            $this->player1->incrementPoint();
+            $this->player1->wonAPoint();
             return;
         }
 
-        $this->player2->incrementPoint();
+        $this->player2->wonAPoint();
     }
 
     private function isNormalGame(): bool
     {
-        return $this->player1->points() < self::THRESHOLD_TO_WIN && $this->player2->points() < self::THRESHOLD_TO_WIN
-            && !($this->player1->points() + $this->player2->points() === self::MIN_WINNING_POINTS);
+        return $this->player1->isPlayingAGame($this->player2);
     }
 
     private function isDeuce(): bool
     {
-        return $this->player1->points() === $this->player2->points();
+        return $this->player1->isDeuce($this->player2);
     }
 
     private function isAdvantage(): bool
     {
-        return abs($this->player1->points() - $this->player2->points()) === self::MIN_DIFFERENCE_OF_POINTS;
+        return $this->player1->hasAdvantage($this->player2);
     }
 
     private function currentWinningPlayer(): string
     {
-        return $this->player1->points() > $this->player2->points()
-            ? $this->player1->name()
-            : $this->player2->name();
+        return $this->player1->playerWinning($this->player2);
+    }
+
+    private function printScore(string $format, string $score1, string $score2): string
+    {
+        return sprintf($format, $score1, $score2);
     }
 }
