@@ -6,6 +6,8 @@ namespace TennisGame;
 
 class TennisGame3 implements TennisGame
 {
+    private const POINTS = ["Love", "Fifteen", "Thirty", "Forty"];
+
     private string $playerName1;
     private string $playerName2;
 
@@ -21,19 +23,20 @@ class TennisGame3 implements TennisGame
     public function getScore(): string
     {
         if ($this->isNormalGame()) {
-            $p = ["Love", "Fifteen", "Thirty", "Forty"];
-            $s = $p[$this->playerPoints1];
+            $s = self::POINTS[$this->playerPoints1];
 
-            return ($this->isDeuce())
+            return $this->isDeuce()
                 ? "{$s}-All"
-                : "{$s}-{$p[$this->playerPoints2]}";
+                : sprintf("%s-%s", $s, self::POINTS[$this->playerPoints2]);
         }
 
         if ($this->isDeuce()) {
             return "Deuce";
         }
 
-        $s = $this->playerPoints1 > $this->playerPoints2 ? $this->playerName1 : $this->playerName2;
+        $s = $this->playerPoints1 > $this->playerPoints2
+            ? $this->playerName1
+            : $this->playerName2;
 
         if ($this->isAdvantage()) {
             return "Advantage {$s}";
