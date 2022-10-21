@@ -7,13 +7,18 @@ namespace TennisGame;
 class TennisGame3 implements TennisGame
 {
     private const POINTS = ["Love", "Fifteen", "Thirty", "Forty"];
-    private const WIN = 'Win';
+
     private const THRESHOLD_TO_WIN = 4;
     private const MIN_WINNING_POINTS = 6;
     private const MIN_DIFFERENCE_OF_POINTS = 1;
-    const ALL = "All";
-    const DEUCE = "Deuce";
-    const ADVANTAGE = "Advantage";
+
+    private const ALL = "All";
+    private const DEUCE = "Deuce";
+    private const ADVANTAGE = "Advantage";
+    private const WIN = 'Win';
+
+    private const FORMAT_DISPLAY_POINTS = '%s-%s';
+
     private string $playerName1;
     private string $playerName2;
 
@@ -29,12 +34,11 @@ class TennisGame3 implements TennisGame
     public function getScore(): string
     {
         if ($this->isNormalGame()) {
-
             if ($this->isDeuce()) {
-                return sprintf('%s-%s', self::POINTS[$this->playerPoints1], self::ALL);
+                return sprintf(self::FORMAT_DISPLAY_POINTS, self::POINTS[$this->playerPoints1], self::ALL);
             }
 
-            return sprintf("%s-%s", self::POINTS[$this->playerPoints1], self::POINTS[$this->playerPoints2]);
+            return sprintf(self::FORMAT_DISPLAY_POINTS, self::POINTS[$this->playerPoints1], self::POINTS[$this->playerPoints2]);
         }
 
         if ($this->isDeuce()) {
