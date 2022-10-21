@@ -50,9 +50,10 @@ class TennisGame3 implements TennisGame
     {
         if ($playerName === $this->playerName1) {
             $this->playerPoints1++;
-        } else {
-            $this->playerPoints2++;
+            return;
         }
+
+        $this->playerPoints2++;
     }
 
     private function isNormalGame(): bool
