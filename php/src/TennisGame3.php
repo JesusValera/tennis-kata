@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace TennisGame;
 
 class TennisGame3 implements TennisGame
 {
-    private $p2 = 0;
-    private $p1 = 0;
-    private $p1N = '';
-    private $p2N = '';
+    private int $p2 = 0;
+    private int $p1 = 0;
+    private string $p1N = '';
+    private string $p2N = '';
 
-    public function __construct($p1N, $p2N)
+    public function __construct(string $p1N, string $p2N)
     {
         $this->p1N = $p1N;
         $this->p2N = $p2N;
@@ -18,7 +20,7 @@ class TennisGame3 implements TennisGame
     public function getScore(): string
     {
         if ($this->isNormalGame()) {
-            $p = array("Love", "Fifteen", "Thirty", "Forty");
+            $p = ["Love", "Fifteen", "Thirty", "Forty"];
             $s = $p[$this->p1];
 
             return ($this->isDeuce())
