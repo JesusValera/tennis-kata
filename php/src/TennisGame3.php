@@ -9,6 +9,7 @@ class TennisGame3 implements TennisGame
     private const POINTS             = ["Love", "Fifteen", "Thirty", "Forty"];
     private const THRESHOLD_TO_WIN   = 4;
     const         MIN_WINNING_POINTS = 6;
+    const MIN_DIFFERENCE_OF_POINTS = 1;
     private string $playerName1;
     private string $playerName2;
 
@@ -64,11 +65,11 @@ class TennisGame3 implements TennisGame
 
     private function isDeuce(): bool
     {
-        return $this->playerPoints1 == $this->playerPoints2;
+        return $this->playerPoints1 === $this->playerPoints2;
     }
 
     private function isAdvantage(): bool
     {
-        return ($this->playerPoints1 - $this->playerPoints2) * ($this->playerPoints1 - $this->playerPoints2) == 1;
+        return abs($this->playerPoints1 - $this->playerPoints2) === self::MIN_DIFFERENCE_OF_POINTS;
     }
 }
